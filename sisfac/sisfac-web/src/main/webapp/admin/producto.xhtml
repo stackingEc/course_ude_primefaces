@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="contenido">
+		<p:growl id="menGen" />
+		<p:toolbar>
+			<f:facet name="right">
+				<p:commandButton value="Nuevo" icon="ui-icon-document"
+					actionListener="#{productoBean.resetearFormulario}" />
+				<p:commandButton value="Guardar" icon="ui-icon-disk"
+					process="@this :frmGen:panGriPro"
+					actionListener="#{productoBean.guardar}"
+					update=":frmGen:menGen :frmGen:datTabPro :frmGen:panGriPro" />
+				<span class="ui-separator"> <span
+					class="ui-icon ui-icon-grip-dotted-vertical" />
+				</span>
+				<p:commandButton value="Editar" icon="ui-icon-pencil"
+					process="@this" actionListener="#{productoBean.editar}"
+					update=":frmGen:menGen :frmGen:panGriPro" />
+				<p:commandButton value="Eliminar" icon="ui-icon-trash"
+					onclick="PF('diaConPro').show();" />
+			</f:facet>
+		</p:toolbar>
+		<p:panelGrid id="panGriPro" columns="4">
+			<p:outputLabel value="Tipo Producto:" for="cmbTipPro" />
+			<p:selectOneMenu id="cmbTipPro" required="true" effect="drop"
+				value="#{productoBean.producto.tipoProducto}"
+				converter="#{convTipPro}">
+				<f:selectItem itemLabel="Seleccione una opción"
+					noSelectionOption="true" itemValue=""/>
+				<f:selectItems value="#{productoBean.listaTipoProductos}"
+					var="tipPro" itemLabel="#{tipPro.tipproNombre}"
+					itemValue="#{tipPro}" />
+			</p:selectOneMenu>
+			<p:outputLabel value="Nombre:" for="txtNomPro" />
+			<p:inputText id="txtNomPro" required="true" maxlength="45"
+				value="#{productoBean.producto.proNombre}" />
+			<p:outputLabel value="Descripción:" for="txaDesPro" />
+			<p:inputTextarea id="txaDesPro" required="true" maxlength="200"
+				rows="4" cols="50" value="#{productoBean.producto.proDescripcion}" />
+			<p:outputLabel value="Precio:" for="spiPrePro" />
+			<p:spinner id="spiPrePro" stepFactor="1" min="1"
+				value="#{productoBean.producto.proPrecio}" />
+		</p:panelGrid>
+		<br></br>
+		<p:dataTable id="datTabPro"
+			emptyMessage="No existen productos registrados"
+			value="#{productoBean.listaProductos}" var="pro" paginator="true"
+			rows="10" selectionMode="single" rowKey="#{pro.proCodigo}">
+			<f:facet name="header">
+				<p:outputLabel value="Lista de Productos" />
+			</f:facet>
+			<p:ajax event="rowSelect"
+				listener="#{productoBean.seleccionarRegistro}" />
+			<p:column headerText="Tipo Producto">
+				<p:outputLabel value="#{pro.tipoProducto.tipproNombre}" />
+			</p:column>
+			<p:column headerText="Nombre">
+				<p:outputLabel value="#{pro.proNombre}" />
+			</p:column>
+			<p:column headerText="Descripción">
+				<p:outputLabel value="#{pro.proDescripcion}" />
+			</p:column>
+			<p:column headerText="Precio">
+				<p:outputLabel value="#{pro.proPrecio}" />
+			</p:column>
+		</p:dataTable>
+		<p:dialog widgetVar="diaConPro" header="Confirmación Eliminación"
+			width="200" height="100">
+			<p:panelGrid columns="3">
+				<p:outputLabel value="Está seguro de eliminar el registro?" />
+				<p:commandButton value="Si" process="@this"
+					actionListener="#{productoBean.eliminar}"
+					update=":frmGen:menGen :frmGen:datTabPro"
+					oncomplete="PF('diaConPro').hide();" />
+				<p:commandButton value="No" onclick="PF('diaConPro').hide();" />
+			</p:panelGrid>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

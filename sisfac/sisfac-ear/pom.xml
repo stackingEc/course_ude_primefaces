@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>sisfac</artifactId>
+		<groupId>com.matoosfe</groupId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>sisfac-ear</artifactId>
+	<packaging>ear</packaging>
+
+	<name>sisfac-ear</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.ear.plugin>2.8</version.ear.plugin>
+		<version.ear.plugin.conf>6</version.ear.plugin.conf>
+		<nombreapp>sisfac</nombreapp>
+		<jboss.deploy.dir>/home/martosfre/Matoosfe/Capacitaciones/PrimefacesJEE/Servidores/wildfly-10.1.0.Final/standalone/deployments/</jboss.deploy.dir>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.matoosfe</groupId>
+			<artifactId>sisfac-web</artifactId>
+			<version>${version.sisfac}</version>
+			<type>war</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.matoosfe</groupId>
+			<artifactId>sisfac-ejb</artifactId>
+			<version>${version.sisfac}</version>
+			<type>ejb</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${nombreapp}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>${version.ear.plugin}</version>
+				<configuration>
+					<version>${version.ear.plugin.conf}</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install</id>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+								<delete file="${jboss.deploy.dir}/${nombreapp}.ear.deployed" />
+								<copy file="target/${nombreapp}.ear" tofile="${jboss.deploy.dir}/${nombreapp}.ear" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

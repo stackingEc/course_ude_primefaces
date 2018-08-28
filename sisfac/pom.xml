@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.matoosfe</groupId>
+	<artifactId>sisfac</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+
+	<name>sisfac</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.compiler>1.7</version.compiler>
+		<version.maven.compiler>3.1</version.maven.compiler>
+		<version.sisfac>1.0</version.sisfac>
+		<version.jee>7.0</version.jee>
+		<version.junit>4.12</version.junit>
+		<version.dependency.plugin>2.6</version.dependency.plugin>
+	</properties>
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>Primefaces Maven Repository</name>
+			<url>https://repository.primefaces.org</url>
+		</repository>
+	</repositories>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>sisfac-ear</module>
+		<module>sisfac-web</module>
+		<module>sisfac-ejb</module>
+	</modules>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${version.maven.compiler}</version>
+					<configuration>
+						<source>${version.compiler}</source>
+						<target>${version.compiler}</target>
+						<compilerArguments>
+							<endorseddirs>${endorsed.dir}</endorseddirs>
+						</compilerArguments>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
