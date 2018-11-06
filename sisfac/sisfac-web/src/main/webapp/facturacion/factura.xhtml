@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+	<ui:define name="contenido">
+		<p:growl id="menGen" />
+		<p:toolbar>
+			<f:facet name="right">
+				<p:commandButton value="Nuevo" icon="ui-icon-document"
+					process="@this" actionListener="#{facturaBean.resetearFormulario}"
+					update="@form" />
+				<p:commandButton value="Guardar" icon="ui-icon-disk"
+					process="@this :frmGen:tabVieGen:panGriCabFac"
+					actionListener="#{facturaBean.guardar}"
+					update=":frmGen:menGen :frmGen:tabVieGen:panGriCabFac :frmGen:tabVieGen:datTabFac
+							:frmGen:tabVieGen:datTabDetFac" />
+				<p:commandButton value="Anular" icon="ui-icon-cancel"
+					onclick="PF('diaConAnuFac').show();" />
+				<p:commandButton value="Eliminar" icon="ui-icon-trash"
+					onclick="PF('diaConFac').show();" />
+			</f:facet>
+			<f:facet name="left">
+				<p:outputLabel value="Administración de Factura" />
+			</f:facet>
+		</p:toolbar>
+		<br></br>
+		<p:tabView id="tabVieGen">
+			<p:tab title="Generar Factura">
+				<p:panelGrid id="panGriCabFac" columns="4" style="width:100%">
+					<p:outputLabel value="Numero:" />
+					<p:inputText id="txtNumFac" maxlength="16"
+						value="#{facturaBean.factura.facNumero}" />
+					<p:outputLabel value="Fecha:" />
+					<p:calendar id="calFecFac" value="#{facturaBean.factura.facFecha}" />
+					<p:outputLabel for="txtIdeCli" value="Identificacion Cliente:" />
+					<h:panelGroup>
+						<p:inputText id="txtIdeCli" maxlength="13" required="true"
+							value="#{facturaBean.cliente.cliIdentificacion}" />
+						<p:commandButton icon="ui-icon-search"
+							process="@this :frmGen:tabVieGen:txtIdeCli"
+							actionListener="#{facturaBean.buscarCliente}"
+							update=":frmGen:tabVieGen:txtNomCli
+							:frmGen:tabVieGen:txaDirCli :frmGen:tabVieGen:txtTelCli
+							:frmGen:menGen" />
+					</h:panelGroup>
+					<p:outputLabel value="Nombres:" />
+					<p:inputText id="txtNomCli" readonly="true"
+						value="#{facturaBean.cliente.cliNombres} #{facturaBean.cliente.cliApellidos}" />
+					<p:outputLabel value="Dirección" />
+					<p:inputTextarea id="txaDirCli" readonly="true"
+						value="#{facturaBean.cliente.cliDireccion}" />
+					<p:outputLabel value="Teléfono" />
+					<p:inputText id="txtTelCli" readonly="true"
+						value="#{facturaBean.cliente.cliTelefono}" />
+					<p:outputLabel value="Subtotal:" />
+					<p:spinner id="spiSubFac"
+						value="#{facturaBean.factura.facSubtotal}" />
+					<p:outputLabel value="Impuesto:" />
+					<p:spinner id="spiImpFac"
+						value="#{facturaBean.factura.facImpuesto}" />
+					<p:outputLabel value="Total:" />
+					<p:spinner id="spiTotFac" value="#{facturaBean.factura.facTotal}" />
+				</p:panelGrid>
+				<br></br>
+				<p:toolbar>
+					<f:facet name="right">
+						<p:commandButton value="Añadir" icon="ui-icon-plus"
+							onclick="PF('diaAnaDetFac').show();" />
+						<p:commandButton value="Eliminar" icon="ui-icon-trash"
+							onclick="PF('diaConEliDetFac').show();" />
+					</f:facet>
+				</p:toolbar>
+				<p:dataTable id="datTabDetFac" value="#{facturaBean.listaDetalles}"
+					var="detFac" selectionMode="single"
+					rowKey="#{detFac.detfacCodigoTmp}">
+					<p:ajax event="rowSelect"
+						listener="#{facturaBean.seleccionarDetalleFactura}" />
+					<p:column headerText="Producto">
+						<p:outputLabel value="#{detFac.producto.proNombre}" />
+					</p:column>
+					<p:column headerText="Observación">
+						<p:outputLabel value="#{detFac.detfacObservacion}" />
+					</p:column>
+					<p:column headerText="Cantidad">
+						<p:outputLabel value="#{detFac.detfacCantidad}" />
+					</p:column>
+					<p:column headerText="Precio">
+						<p:outputLabel value="#{detFac.detfacPrecio}" />
+					</p:column>
+					<p:column headerText="Total">
+						<p:outputLabel value="#{detFac.detfacTotal}" />
+					</p:column>
+				</p:dataTable>
+				<p:dialog widgetVar="diaConFac" header="Confirmación Eliminación"
+					width="300" height="150">
+					<p:panelGrid columns="3">
+						<p:outputLabel value="Está seguro de eliminar el registro?" />
+						<p:commandButton value="Si" process="@this"
+							actionListener="#{facturaBean.eliminar}"
+							update=":frmGen:menGen :frmGen:tabVieGen:datTabFac"
+							oncomplete="PF('diaConFac').hide();" />
+						<p:commandButton value="No" onclick="PF('diaConFac').hide();" />
+					</p:panelGrid>
+				</p:dialog>
+				<p:dialog widgetVar="diaConEliDetFac"
+					header="Confirmacion Eliminacion Detalle" width="300" height="150">
+					<p:panelGrid columns="3">
+						<p:outputLabel value="Está seguro de eliminar el registro?" />
+						<p:commandButton value="Si" process="@this"
+							actionListener="#{facturaBean.eliminarDetalle}"
+							update=":frmGen:tabVieGen:datTabDetFac :frmGen:menGen"
+							oncomplete="PF('diaConEliDetFac').hide();" />
+						<p:commandButton value="No"
+							onclick="PF('diaConEliDetFac').hide();" />
+					</p:panelGrid>
+				</p:dialog>
+				<p:dialog widgetVar="diaAnaDetFac" header="Añadir Detalle"
+					width="450" height="400">
+					<p:toolbar>
+						<f:facet name="right">
+							<p:commandButton value="Guardar"
+								process="@this :frmGen:tabVieGen:panGriAnaDetFac"
+								actionListener="#{facturaBean.anadirDetalle}"
+								update=":frmGen:tabVieGen:panGriAnaDetFac :frmGen:tabVieGen:datTabDetFac :frmGen:menGen"
+								oncomplete="PF('diaAnaDetFac').hide();" />
+							<p:commandButton value="Cancelar" process="@this"
+								actionListener="#{facturaBean.cancelarDetalle}"
+								update=":frmGen:tabVieGen:panGriAnaDetFac"
+								oncomplete="PF('diaAnaDetFac').hide();" />
+						</f:facet>
+					</p:toolbar>
+					<br />
+					<p:panelGrid id="panGriAnaDetFac" columns="2" style="width:100%">
+						<p:outputLabel value="Producto:" for="atxtProDetFac" />
+						<p:autoComplete id="atxtProDetFac" required="true"
+							value="#{facturaBean.producto}" converter="#{convPro}"
+							completeMethod="#{facturaBean.completarProductos}" var="pro"
+							itemLabel="#{pro.proNombre}" itemValue="#{pro}">
+							<p:ajax event="itemSelect"
+								listener="#{facturaBean.actualizarPrecioProducto}"
+								update="frmGen:tabVieGen:spiPreProDetFac" />
+						</p:autoComplete>
+						<p:outputLabel value="Observaciones:" for="txaObsDetFac" />
+						<p:inputTextarea id="txaObsDetFac" rows="5" cols="40"
+							maxlength="200" value="#{facturaBean.detalle.detfacObservacion}" />
+						<p:outputLabel value="Precio:" for="spiPreProDetFac" />
+						<p:spinner id="spiPreProDetFac" readonly="true"
+							value="#{facturaBean.detalle.detfacPrecio}" />
+						<p:outputLabel value="Cantidad:" for="spiCanDetFac" />
+						<p:spinner id="spiCanDetFac" required="true"
+							value="#{facturaBean.detalle.detfacCantidad}">
+							<p:ajax event="blur"
+								process="@this :frmGen:tabVieGen:spiPreProDetFac"
+								listener="#{facturaBean.calcularTotalDetalle}"
+								update=":frmGen:tabVieGen:spiTotDetFac" />
+						</p:spinner>
+						<p:outputLabel value="Total:" for="spiTotDetFac" />
+						<p:spinner id="spiTotDetFac" readonly="true"
+							value="#{facturaBean.detalle.detfacTotal}" />
+					</p:panelGrid>
+				</p:dialog>
+			</p:tab>
+			<p:tab title="Listar Facturas">
+				<p:panelGrid id="panGriBusFac" columns="4" style="width:100%">
+					<p:outputLabel value="Buscar Por:" for="txtBusPor" />
+					<p:selectOneMenu id="cmbBusPor" value="#{facturaBean.busquedaPor}">
+						<f:selectItem itemLabel="Seleccione una opción" />
+						<f:selectItem itemLabel="Número" itemValue="Numero" />
+						<f:selectItem itemLabel="Cliente" itemValue="Cliente" />
+						<f:selectItem itemLabel="Estado" itemValue="Estado" />
+						<f:selectItem itemLabel="Fecha" itemValue="Fecha" />
+					</p:selectOneMenu>
+					<p:inputText id="txtBusPor"
+						value="#{facturaBean.valorBusPor}" />
+					<p:commandButton icon="ui-icon-search"
+						process="@this :frmGen:tabVieGen:panGriBusFac"
+						actionListener="#{facturaBean.buscarFacturas}"
+						update=":frmGen:menGen :frmGen:tabVieGen:datTabFac" />
+				</p:panelGrid>
+				<br></br>
+				<p:dataTable id="datTabFac" value="#{facturaBean.listaFacturas}"
+					var="fac" selectionMode="single" rowKey="#{fac.facCodigo}">
+					<p:ajax event="rowSelect"
+						listener="#{facturaBean.seleccionarFactura}" />
+					<p:column headerText="Número">
+						<p:outputLabel value="#{fac.facNumero}" />
+					</p:column>
+					<p:column headerText="Fecha">
+						<p:outputLabel value="#{fac.facFecha}">
+							<f:convertDateTime pattern="yyyy-MM-dd" />
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="Cliente">
+						<p:outputLabel
+							value="#{fac.cliente.cliNombres} #{fac.cliente.cliApellidos}" />
+					</p:column>
+					<p:column headerText="Subtotal">
+						<p:outputLabel value="#{fac.facSubtotal}" />
+					</p:column>
+					<p:column headerText="Impuesto">
+						<p:outputLabel value="#{fac.facImpuesto}" />
+					</p:column>
+					<p:column headerText="Total">
+						<p:outputLabel value="#{fac.facTotal}" />
+					</p:column>
+					<p:column headerText="Detalles">
+						<p:dataList value="#{fac.detalleFacturas}" var="detFacLis">
+							<p:outputLabel value="#{detFacLis}" />
+						</p:dataList>
+					</p:column>
+					<p:column headerText="Estado">
+						<p:outputLabel
+							value="#{fac.facEstado eq '1' ? 'EMITIDO' : 'ANULADO'}" />
+					</p:column>
+				</p:dataTable>
+			</p:tab>
+		</p:tabView>
+		<p:dialog widgetVar="diaConAnuFac" header="Confirmación Anulación"
+			width="300" height="150">
+			<p:panelGrid columns="3">
+				<p:outputLabel value="Está seguro de anular la factura?" />
+				<p:commandButton value="Si" process="@this"
+					actionListener="#{facturaBean.anular}"
+					update=":frmGen:menGen :frmGen:tabVieGen:datTabFac"
+					oncomplete="PF('diaConAnuFac').hide();" />
+				<p:commandButton value="No" onclick="PF('diaConAnuFac').hide();" />
+			</p:panelGrid>
+		</p:dialog>
+		<p:dialog widgetVar="diaConFac" header="Confirmación Eliminación"
+			width="200" height="100">
+			<p:panelGrid columns="3">
+				<p:outputLabel value="Está seguro de eliminar el registro?" />
+				<p:commandButton value="Si" process="@this"
+					actionListener="#{facturaBean.eliminar}"
+					update=":frmGen:menGen :frmGen:tabVieGen:datTabFac"
+					oncomplete="PF('diaConFac').hide();" />
+				<p:commandButton value="No" onclick="PF('diaConFac').hide();" />
+			</p:panelGrid>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

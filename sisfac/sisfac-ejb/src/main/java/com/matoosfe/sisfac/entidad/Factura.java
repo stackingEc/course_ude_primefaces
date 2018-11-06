@@ -6,45 +6,48 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the factura database table.
  * 
  */
 @Entity
-@Table(name="factura")
-@NamedQuery(name="Factura.findAll", query="SELECT f FROM Factura f")
+@Table(name = "factura")
+@NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f")
 public class Factura implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="fac_codigo")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "fac_codigo")
 	private int facCodigo;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="fac_fecha")
+	@Column(name = "fac_fecha")
 	private Date facFecha;
 
-	@Column(name="fac_impuesto")
+	@Column(name = "fac_impuesto")
 	private BigDecimal facImpuesto;
 
-	@Column(name="fac_numero")
+	@Column(name = "fac_numero")
 	private String facNumero;
 
-	@Column(name="fac_subtotal")
+	@Column(name = "fac_subtotal")
 	private BigDecimal facSubtotal;
 
-	@Column(name="fac_total")
+	@Column(name = "fac_total")
 	private BigDecimal facTotal;
 
-	//bi-directional many-to-one association to DetalleFactura
-	@OneToMany(mappedBy="factura")
+	@Column(name = "fac_estado")
+	private int facEstado;
+
+	// bi-directional many-to-one association to DetalleFactura
+	// 1 - CASCADE
+	@OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<DetalleFactura> detalleFacturas;
 
-	//bi-directional many-to-one association to Cliente
+	// bi-directional many-to-one association to Cliente
 	@ManyToOne
-	@JoinColumn(name="cli_codigo")
+	@JoinColumn(name = "cli_codigo")
 	private Cliente cliente;
 
 	public Factura() {
@@ -96,6 +99,21 @@ public class Factura implements Serializable {
 
 	public void setFacTotal(BigDecimal facTotal) {
 		this.facTotal = facTotal;
+	}
+
+	/**
+	 * @return the facEstado
+	 */
+	public int getFacEstado() {
+		return facEstado;
+	}
+
+	/**
+	 * @param facEstado
+	 *            the facEstado to set
+	 */
+	public void setFacEstado(int facEstado) {
+		this.facEstado = facEstado;
 	}
 
 	public List<DetalleFactura> getDetalleFacturas() {
