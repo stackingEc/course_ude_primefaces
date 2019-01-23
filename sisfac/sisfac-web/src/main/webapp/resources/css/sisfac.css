@@ -6,6 +6,7 @@
 	color: blue;
 }
 
-.ui-inputfield{
-	background-color: gray!important;
+.ui-widget-header{
+	color: white !important;
+	background: #52928e !important;
 }
