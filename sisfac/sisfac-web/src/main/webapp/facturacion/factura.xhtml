@@ -9,17 +9,17 @@
 		<p:growl id="menGen" />
 		<p:toolbar>
 			<f:facet name="right">
-				<p:commandButton value="Nuevo" icon="ui-icon-document"
+				<p:commandButton value="Nuevo" icon="icon_document"
 					process="@this" actionListener="#{facturaBean.resetearFormulario}"
 					update="@form" />
-				<p:commandButton value="Guardar" icon="ui-icon-disk"
+				<p:commandButton value="Guardar" icon="icon_save"
 					process="@this :frmGen:tabVieGen:panGriCabFac"
 					actionListener="#{facturaBean.guardar}"
 					update=":frmGen:menGen :frmGen:tabVieGen:panGriCabFac :frmGen:tabVieGen:datTabFac
 							:frmGen:tabVieGen:datTabDetFac" />
-				<p:commandButton value="Anular" icon="ui-icon-cancel"
+				<p:commandButton value="Anular" icon="icon_cancel"
 					onclick="PF('diaConAnuFac').show();" />
-				<p:commandButton value="Eliminar" icon="ui-icon-trash"
+				<p:commandButton value="Eliminar" icon="icon_delete"
 					onclick="PF('diaConFac').show();" />
 			</f:facet>
 			<f:facet name="left">

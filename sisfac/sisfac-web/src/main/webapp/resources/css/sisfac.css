@@ -10,3 +10,25 @@
 	color: white !important;
 	background: #52928e !important;
 }
+
+/*Estilos para los botones*/
+
+.ui-button{
+	font-size: 14px !important;
+}
+
+.icon_document{
+	background: url("#{facesContext.externalContext.request.contextPath}/resources/img/icoDocument16x16.png")!important;
+}
+
+.icon_save{
+	background: url("#{facesContext.externalContext.request.contextPath}/resources/img/icoSave16x16.png")!important;
+}
+
+.icon_cancel{
+	background: url("#{facesContext.externalContext.request.contextPath}/resources/img/icoCancel16x16.png")!important;
+}
+
+.icon_delete{
+	background: url("#{facesContext.externalContext.request.contextPath}/resources/img/icoDelete16x16.png")!important;
+}
