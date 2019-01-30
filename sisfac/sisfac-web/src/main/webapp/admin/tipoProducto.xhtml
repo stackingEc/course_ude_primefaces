@@ -26,10 +26,10 @@
 			</f:facet>
 		</p:toolbar>
 		<p:panelGrid id="panGriTipPro" columns="2">
-			<p:outputLabel value="Nombre:" for="txtNomTipPro" />
+			<p:outputLabel value="Nombre:" for="txtNomTipPro" styleClass="etiqueta"/>
 			<p:inputText id="txtNomTipPro" required="true" maxlength="45"
 				value="#{tipoProductoBean.tipoProducto.tipproNombre}" />
-			<p:outputLabel value="Descripción:" for="txaDesTipPro" />
+			<p:outputLabel value="Descripción:" for="txaDesTipPro" styleClass="etiqueta"/>
 			<p:inputTextarea id="txaDesTipPro" required="true" maxlength="200"
 				rows="4" cols="100"
 				value="#{tipoProductoBean.tipoProducto.tipproDescripcion}" />
