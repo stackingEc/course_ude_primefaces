@@ -30,12 +30,12 @@
 		<p:tabView id="tabVieGen">
 			<p:tab title="Generar Factura">
 				<p:panelGrid id="panGriCabFac" columns="4" style="width:100%">
-					<p:outputLabel value="Numero:"/>
+					<p:outputLabel value="Numero:" styleClass="etiqueta"/>
 					<p:inputText id="txtNumFac" maxlength="16"
 						value="#{facturaBean.factura.facNumero}" />
-					<p:outputLabel value="Fecha:" />
+					<p:outputLabel value="Fecha:" styleClass="etiqueta"/>
 					<p:calendar id="calFecFac" value="#{facturaBean.factura.facFecha}" />
-					<p:outputLabel for="txtIdeCli" value="Identificacion Cliente:" />
+					<p:outputLabel for="txtIdeCli" value="Identificacion Cliente:" styleClass="etiqueta" />
 					<h:panelGroup>
 						<p:inputText id="txtIdeCli" maxlength="13" required="true"
 							value="#{facturaBean.cliente.cliIdentificacion}" />
@@ -46,23 +46,23 @@
 							:frmGen:tabVieGen:txaDirCli :frmGen:tabVieGen:txtTelCli
 							:frmGen:menGen" />
 					</h:panelGroup>
-					<p:outputLabel value="Nombres:" />
+					<p:outputLabel value="Nombres:" styleClass="etiqueta"/>
 					<p:inputText id="txtNomCli" readonly="true"
 						value="#{facturaBean.cliente.cliNombres} #{facturaBean.cliente.cliApellidos}" />
-					<p:outputLabel value="Dirección" />
+					<p:outputLabel value="Dirección:" styleClass="etiqueta"/>
 					<p:inputTextarea id="txaDirCli" readonly="true"
 						value="#{facturaBean.cliente.cliDireccion}" />
-					<p:outputLabel value="Teléfono" />
+					<p:outputLabel value="Teléfono:" styleClass="etiqueta"/>
 					<p:inputText id="txtTelCli" readonly="true"
 						value="#{facturaBean.cliente.cliTelefono}" />
-					<p:outputLabel value="Subtotal:" />
-					<p:spinner id="spiSubFac"
+					<p:outputLabel value="Subtotal:" styleClass="etiqueta"/>
+					<p:spinner id="spiSubFac" readonly="true"
 						value="#{facturaBean.factura.facSubtotal}" />
-					<p:outputLabel value="Impuesto:" />
-					<p:spinner id="spiImpFac"
+					<p:outputLabel value="Impuesto:" styleClass="etiqueta"/>
+					<p:spinner id="spiImpFac" readonly="true"
 						value="#{facturaBean.factura.facImpuesto}" />
-					<p:outputLabel value="Total:" />
-					<p:spinner id="spiTotFac" value="#{facturaBean.factura.facTotal}" />
+					<p:outputLabel value="Total:" styleClass="etiqueta"/>
+					<p:spinner id="spiTotFac" value="#{facturaBean.factura.facTotal}" readonly="true"/>
 				</p:panelGrid>
 				<br></br>
 				<p:toolbar>
@@ -134,7 +134,7 @@
 					</p:toolbar>
 					<br />
 					<p:panelGrid id="panGriAnaDetFac" columns="2" style="width:100%">
-						<p:outputLabel value="Producto:" for="atxtProDetFac" />
+						<p:outputLabel value="Producto:" for="atxtProDetFac" styleClass="etiqueta"/>
 						<p:autoComplete id="atxtProDetFac" required="true"
 							value="#{facturaBean.producto}" converter="#{convPro}"
 							completeMethod="#{facturaBean.completarProductos}" var="pro"
@@ -143,13 +143,13 @@
 								listener="#{facturaBean.actualizarPrecioProducto}"
 								update="frmGen:tabVieGen:spiPreProDetFac" />
 						</p:autoComplete>
-						<p:outputLabel value="Observaciones:" for="txaObsDetFac" />
+						<p:outputLabel value="Observaciones:" for="txaObsDetFac" styleClass="etiqueta"/>
 						<p:inputTextarea id="txaObsDetFac" rows="5" cols="40"
 							maxlength="200" value="#{facturaBean.detalle.detfacObservacion}" />
-						<p:outputLabel value="Precio:" for="spiPreProDetFac" />
+						<p:outputLabel value="Precio:" for="spiPreProDetFac" styleClass="etiqueta"/>
 						<p:spinner id="spiPreProDetFac" readonly="true"
 							value="#{facturaBean.detalle.detfacPrecio}" />
-						<p:outputLabel value="Cantidad:" for="spiCanDetFac" />
+						<p:outputLabel value="Cantidad:" for="spiCanDetFac" styleClass="etiqueta"/>
 						<p:spinner id="spiCanDetFac" required="true"
 							value="#{facturaBean.detalle.detfacCantidad}">
 							<p:ajax event="blur"
@@ -157,7 +157,7 @@
 								listener="#{facturaBean.calcularTotalDetalle}"
 								update=":frmGen:tabVieGen:spiTotDetFac" />
 						</p:spinner>
-						<p:outputLabel value="Total:" for="spiTotDetFac" />
+						<p:outputLabel value="Total:" for="spiTotDetFac" styleClass="etiqueta"/>
 						<p:spinner id="spiTotDetFac" readonly="true"
 							value="#{facturaBean.detalle.detfacTotal}" />
 					</p:panelGrid>
@@ -165,7 +165,7 @@
 			</p:tab>
 			<p:tab title="Listar Facturas">
 				<p:panelGrid id="panGriBusFac" columns="4" style="width:100%">
-					<p:outputLabel value="Buscar Por:" for="txtBusPor" />
+					<p:outputLabel value="Buscar Por:" for="txtBusPor" styleClass="etiqueta"/>
 					<p:selectOneMenu id="cmbBusPor" value="#{facturaBean.busquedaPor}">
 						<f:selectItem itemLabel="Seleccione una opción" />
 						<f:selectItem itemLabel="Número" itemValue="Numero" />
