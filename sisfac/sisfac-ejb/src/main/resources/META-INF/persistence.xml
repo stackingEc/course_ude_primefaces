@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="sisfacPU" transaction-type="JTA">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<jta-data-source>java:/inventarioDS</jta-data-source>
+		<jta-data-source>java:/inventario</jta-data-source>
 		<class>com.matoosfe.sisfac.entidad.Cliente</class>
 		<class>com.matoosfe.sisfac.entidad.DetalleFactura</class>
 		<class>com.matoosfe.sisfac.entidad.Factura</class>

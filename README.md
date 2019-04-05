@@ -8,3 +8,4 @@ Proyecto web de facturación desarrollado utilizando Java/JEE con Primefaces el 
 - Primefaces 6.2
 - Wildfly 10.0.1
 - Eclipse Oxygen.
+# course_ude_primefaces
